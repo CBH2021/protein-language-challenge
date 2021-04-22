@@ -1,12 +1,21 @@
 biolib_version: 2
 modules:
     main:
-        image: 'local-docker://protein-language-docker:latest'
-        command: challenge pred -c /experiments/config.yml -m /model_best.pth 
+        image: 'local-docker://cbh2021:latest'
+        command: ''
         working_directory: /home/biolib/
         input_files:
-            - COPY / /home/biolib/
+            - COPY / /home/biolib/data/
         output_files:
-            - COPY /home/biolib/ /
+            - COPY /home/biolib/out/ /
         source_files:
             - COPY / /home/biolib/
+
+arguments:
+    -
+        default_value: ''
+        description: 'An npz file containing CASP12 data:'
+        key: '--data'
+        key_value_separator: ' '
+        required: true
+        type: file

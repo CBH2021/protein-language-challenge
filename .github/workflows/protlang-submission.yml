@@ -4,7 +4,7 @@ on: push
 
 env:
     BIOLIB_LOG: debug
-    LOCAL_DOCKER_TAG: protlang:latest
+    LOCAL_DOCKER_TAG: cbh2021:latest
 
 jobs:
     build-and-publish:
