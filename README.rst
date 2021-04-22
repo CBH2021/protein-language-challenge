@@ -54,7 +54,7 @@ Setup
 =====
 
 1. Download this repository
-2. Create a environment from the root folder of the repository
+2. Create an environment from the root folder of the repository
 
 .. code-block::
 
@@ -73,7 +73,7 @@ If you dont use conda you can use pip with an environment
 
   $ sh get_data.sh
 
-4. Set the challenge package a development
+4. Set the challenge package as development
 
 .. code-block::
 
@@ -168,7 +168,7 @@ You can resume from a previously saved checkpoint by:
 
 .. code-block::
 
-  challenge train -c experiments/config.yml -r path/to/checkpoint
+  $ challenge train -c experiments/config.yml -r path/to/checkpoint
 
 Checkpoints
 -----------
@@ -224,3 +224,46 @@ It is important that your model returns the same size of out features as the bas
 Benchmarking System
 ================
 The continuous integration script in .github/workflows/ci.yml will automatically build the Dockerfile on every commit to the main branch. This docker image will be published as your hackathon submission to https://biolib.com/<YourTeam>/<TeamName>. For this to work, make sure you set the BIOLIB_TOKEN and BIOLIB_PROJECT_URI accordingly as repository secrets.
+
+Submission
+================
+If you have setup the benchmarking system correctly, then everytime you do a github push then a docker image will automatically be pushed to https://biolib.com/<YourTeam>/<TeamName>. There is not a limit for how many submissions you can do, but I would recommend to only submit if the newest model predicts better than the previous.
+
+Before a submission it is important that you include the following in the submission folder:
+
+1. Trained model (NAME: model.pth)
+2. Model config (NAME: config.yml)
+
+It is important that you use the following names.
+
+These files are created after a training session. Therefore you should be able to find the files model_best.pth and config.yml in that folder.
+Which can be copied to the submission folder and renamed.
+
+In the end you should have the following folder:
+
+::
+
+  ProteinLanguageChallenge/
+  │
+  ├── submission/
+  │    │
+  │    ├── model.pth <- trained model for submission
+  │    ├── config.yml <- config matching the trained model
+  │    │
+  │    └── .biolib/ - IMPORTANT: Don't delete or change this directory
+
+
+Now you can either commit and push your latest changes or you can manually push a submission by executing the following:
+
+.. code-block::
+
+  $ sh submit.sh <YourTeam>/<TeamName>
+
+Remember that for manual submission you have to export the following enviroment variables to your cli enviroment
+
+.. code-block::
+
+  $ export BIOLIB_EMAIL=<username>
+  $ export BIOLIB_PASSWORD=<password>
+
+Remember to keep your credentials private and don't share them with anyone.
