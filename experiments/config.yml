@@ -1,0 +1,45 @@
+name: baseline
+save_dir: saved/
+seed: 1234
+target_devices: [0]
+
+arch:
+  type: Baseline
+  args:
+    in_features: 1280
+
+data_loader:
+  type: ChallengeDataLoader
+  args:
+    train_path: [data/Train_ESM1b.npz]
+    test_path: [data/CASP12_ESM1b.npz]
+    dataset_loader: ChallengeDataOnlyEmbedding
+    batch_size: 15
+    nworkers: 2
+    shuffle: true
+    validation_split: 0.05
+
+loss: secondary_structure_loss
+
+metrics:
+  metric_q8: 0
+  metric_q3: 1
+
+optimizer:
+  type: Adam
+  args:
+    lr: 0.0001
+    weight_decay: 0
+
+training:
+  early_stop: 3
+  epochs: 50
+  monitor: min val_loss
+  save_period: 1
+  tensorboard: true
+
+lr_scheduler:
+  type: null
+
+augmentation:
+  type: null

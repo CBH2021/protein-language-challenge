@@ -1,0 +1,12 @@
+biolib_version: 2
+modules:
+    main:
+        image: 'local-docker://protein-language-docker:latest'
+        command: challenge pred -c /experiments/config.yml -m /model_best.pth 
+        working_directory: /home/biolib/
+        input_files:
+            - COPY / /home/biolib/
+        output_files:
+            - COPY /home/biolib/ /
+        source_files:
+            - COPY / /home/biolib/
