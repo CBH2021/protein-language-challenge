@@ -1,5 +1,5 @@
 models/*
-data/Train*
+data/*
 notebooks/*
 nsp2/*
 nsp3/saved/*
