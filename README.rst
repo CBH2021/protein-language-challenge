@@ -267,7 +267,7 @@ as well as adding your model to git:
 
 .. code-block::
 
-  git add saved/{INSERT_MODEL_PATH_HERE}
+  git add saved/{INSERT_MODEL_PATH_HERE} -f
 
 
 These files are created after a training session. Therefore you should be able to find the files model_best.pth and config.yml in that folder.
