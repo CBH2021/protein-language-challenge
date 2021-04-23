@@ -124,29 +124,34 @@ def predict(cfg: dict, model_path: str, data: str):
         model_path: path to trained model
         data: file path to data
     """
-    model = get_instance(module_arch, 'arch', cfg)
-    dataset_loader = getattr(module_dataset, cfg['data_loader']['args']['dataset_loader'])
-    data = dataset_loader(data)
+    with torch.no_grad():
+        seed_everything(cfg['seed'])
+        
+        model = get_instance(module_arch, 'arch', cfg)
+        model.eval()
 
-    result = model.forward(data.X, data.y[:, :, 0])
+        dataset_loader = getattr(module_dataset, cfg['data_loader']['args']['dataset_loader'])
+        data = dataset_loader(data)
 
-    # create predictions.csv
-    Q8, Q3 = "GHIBESTC", "HEC"
+        result = model(data.X, data.y[:, :, 0])
 
-    q8 = np.array([Q8[val] for val in np.argmax(result[0].detach().numpy(), axis=2).flatten()])
-    q3 = np.array([Q3[val] for val in np.argmax(result[1].detach().numpy(), axis=2).flatten()])
+        # create predictions.csv
+        Q8, Q3 = "GHIBESTC", "HEC"
 
-    mask = data.y[:, :, 0].detach().numpy().flatten().astype(int)
+        q8 = np.array([Q8[val] for val in np.argmax(result[0].detach().numpy(), axis=2).flatten()])
+        q3 = np.array([Q3[val] for val in np.argmax(result[1].detach().numpy(), axis=2).flatten()])
 
-    q8 = q8[mask == 1]
-    q3 = q3[mask == 1]
+        mask = data.y[:, :, 0].detach().numpy().flatten().astype(int)
 
-    df = np.concatenate([np.expand_dims(q8, axis=1), np.expand_dims(q3, axis=1)], axis=1)
+        q8 = q8[mask == 1]
+        q3 = q3[mask == 1]
 
-    # save to file
-    df = pd.DataFrame(df)
-    df = df.set_axis(["q8", "q3"], axis=1, inplace=False)
-    df.to_csv('predictions.csv')
+        df = np.concatenate([np.expand_dims(q8, axis=1), np.expand_dims(q3, axis=1)], axis=1)
+
+        # save to file
+        df = pd.DataFrame(df)
+        df = df.set_axis(["q8", "q3"], axis=1, inplace=False)
+        df.to_csv('predictions.csv')
 
     return print(df)
 
