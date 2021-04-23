@@ -5,9 +5,9 @@ modules:
         command: ''
         working_directory: /home/biolib/
         input_files:
-            - COPY / /home/biolib/data/
+            - COPY / /home/biolib/
         output_files:
-            - COPY /home/biolib/out/ /
+            - COPY /home/biolib/predictions.csv /
         source_files:
             - COPY / /home/biolib/
 
