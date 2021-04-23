@@ -1,4 +1,4 @@
 data/*
 saved/*
 
-!saved/{INSERT_MODEL_PATH_HERE}
+!saved/baseline/0423-212648/checkpoints/model_best.pth
