@@ -247,6 +247,8 @@ Submission
 ================
 If you have setup the benchmarking system correctly, then everytime you do a github push then a docker image will automatically be pushed to https://biolib.com/<YourTeam-abcd>/<TeamName>. There is not a limit for how many submissions you can do, but I would recommend to only submit if the newest model predicts better than the previous.
 
+Please follow the steps laid out in the following notion document to setup your repo to submit automatically, when a commit is pushed to `main`: https://www.notion.so/Benchmarking-System-46bfaeea0119490cb611688b493c589a
+
 Before a submission it is important that you edit the Dockerfile and .dockerignore:
 
 Dockerfile
@@ -259,9 +261,18 @@ Dockerfile
 
   [line: 4] !saved/{INSERT_MODEL_PATH_HERE}
 
+as well as adding your model to git:
+.. code-block::
+
+  git add saved/{INSERT_MODEL_PATH_HERE}
+
 
 These files are created after a training session. Therefore you should be able to find the files model_best.pth and config.yml in that folder.
-Now you can either commit and push your latest changes or you can manually push a submission by executing the following:
+
+
+
+
+If you absolutely could not setup automatic submission then you can submit manually through:
 
 Inside the submission folder you can write your
 
