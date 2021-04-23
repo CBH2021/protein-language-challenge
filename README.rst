@@ -241,11 +241,11 @@ It is important that your model returns the same size of out features as the bas
 
 Benchmarking System
 ================
-The continuous integration script in .github/workflows/ci.yml will automatically build the Dockerfile on every commit to the main branch. This docker image will be published as your hackathon submission to https://biolib.com/<YourTeam>/<TeamName>. For this to work, make sure you set the BIOLIB_TOKEN and BIOLIB_PROJECT_URI accordingly as repository secrets.
+The continuous integration script in .github/workflows/ci.yml will automatically build the Dockerfile on every commit to the main branch. This docker image will be published as your hackathon submission to https://biolib.com/<YourTeam-abcd>/<TeamName>. For this to work, make sure you set the `BIOLIB_TOKEN` and `BIOLIB_PROJECT_URI` accordingly as repository secrets.
 
 Submission
 ================
-If you have setup the benchmarking system correctly, then everytime you do a github push then a docker image will automatically be pushed to https://biolib.com/<YourTeam>/<TeamName>. There is not a limit for how many submissions you can do, but I would recommend to only submit if the newest model predicts better than the previous.
+If you have setup the benchmarking system correctly, then everytime you do a github push then a docker image will automatically be pushed to https://biolib.com/<YourTeam-abcd>/<TeamName>. There is not a limit for how many submissions you can do, but I would recommend to only submit if the newest model predicts better than the previous.
 
 Before a submission it is important that you edit the Dockerfile and .dockerignore:
 
@@ -275,5 +275,5 @@ Remember that for manual submission you have to export the following enviroment 
 
   $ export BIOLIB_TOKEN=<token>
 
-You can get a token by going to biolib.com → click your name in the top right corner → Settings → Sign In → Generate API Token
+You can get a token by going to https://biolib.com/settings/api-tokens/ and clicking "Create New +".
 Remember to keep your credentials private and don't share them with anyone.
