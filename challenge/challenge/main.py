@@ -128,13 +128,18 @@ def predict(cfg: dict, model_path: str, data: str):
     dataset_loader = getattr(module_dataset, cfg['data_loader']['args']['dataset_loader'])
     data = dataset_loader(data)
 
-    result = model.forward(data.X, data.y[0])
+    result = model.forward(data.X, data.y[:, :, 0])
 
     # create predictions.csv
     Q8, Q3 = "GHIBESTC", "HEC"
 
-    q8 = [Q8[val] for val in np.argmax(result[0].detach().numpy(), axis=2).flatten()]
-    q3 = [Q3[val] for val in np.argmax(result[1].detach().numpy(), axis=2).flatten()]
+    q8 = np.array([Q8[val] for val in np.argmax(result[0].detach().numpy(), axis=2).flatten()])
+    q3 = np.array([Q3[val] for val in np.argmax(result[1].detach().numpy(), axis=2).flatten()])
+
+    mask = data.y[:, :, 0].detach().numpy().flatten().astype(int)
+
+    q8 = q8[mask == 1]
+    q3 = q3[mask == 1]
 
     df = np.concatenate([np.expand_dims(q8, axis=1), np.expand_dims(q3, axis=1)], axis=1)
 
