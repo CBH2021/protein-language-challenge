@@ -40,12 +40,12 @@ def eval(config_filename: str, model_path: str):
 
 
 @cli.command()
-@click.option('-c', '--config-filename', default=['experiments/config.yml'], help='Path to model configuration file.')
+@click.option('-c', '--config-filename', default='config.yml', help='Path to model configuration file.')
 @click.option('-m', '--model_path', default='model.pth', type=str, help='Path to trained model')
-@click.option('-i', '--input_data', default='', type=str, help='Path to prediction data')
-def predict(config_filename: str, model_path: str, input_data: str):
+@click.option('-i', '--data', default=None, type=str, help='Path to prediction data')
+def predict(config_filename: str, model_path: str, data: str):
     config = load_config(config_filename)
-    main.predict(config, model_path, input_data)
+    main.predict(config, model_path, data)
 
 
 def load_config(filename: str) -> dict:

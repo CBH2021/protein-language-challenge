@@ -5,6 +5,7 @@ from typing import Any, List, Tuple, Dict
 from types import ModuleType
 
 import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.optim as module_optimizer
@@ -12,6 +13,7 @@ import torch.optim.lr_scheduler as module_scheduler
 
 import challenge.data_loader.augmentation as module_aug
 import challenge.data_loader.data_loaders as module_data
+import challenge.data_loader.dataset_loaders as module_dataset
 import challenge.models.loss as module_loss
 import challenge.models.metric as module_metric
 import challenge.models as module_arch
@@ -114,18 +116,34 @@ def eval(cfg: dict, model_path: str):
         evaluation.evaluate()
 
 
-def predict(cfg: dict, model_path: str, input_data: str):
+def predict(cfg: dict, model_path: str, data: str):
     """ Predict using trained model and file or string input
     Args:
         cfg: configuration of model
         pred_name: name of the prediction class
         model_path: path to trained model
-        input_data: file path or raw data input
+        data: file path to data
     """
     model = get_instance(module_arch, 'arch', cfg)
-    result = model(input_data)
+    dataset_loader = getattr(module_dataset, cfg['data_loader']['args']['dataset_loader'])
+    data = dataset_loader(data)
 
-    return result
+    result = model.forward(data.X, data.y[0])
+
+    # create predictions.csv
+    Q8, Q3 = "GHIBESTC", "HEC"
+
+    q8 = [Q8[val] for val in np.argmax(result[0].detach().numpy(), axis=2).flatten()]
+    q3 = [Q3[val] for val in np.argmax(result[1].detach().numpy(), axis=2).flatten()]
+
+    df = np.concatenate([np.expand_dims(q8, axis=1), np.expand_dims(q3, axis=1)], axis=1)
+
+    # save to file
+    df = pd.DataFrame(df)
+    df = df.set_axis(["q8", "q3"], axis=1, inplace=False)
+    df.to_csv('predictions.csv')
+
+    return print(df)
 
 
 def setup_device(model: nn.Module, target_devices: List[int]) -> Tuple[torch.device, List[int]]:

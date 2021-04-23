@@ -1,6 +1,4 @@
-models/*
 data/*
-notebooks/*
-nsp2/*
-nsp3/saved/*
-sh/*
+saved/*
+
+!saved/{INSERT_MODEL_PATH_HERE}

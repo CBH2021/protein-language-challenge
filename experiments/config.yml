@@ -15,7 +15,7 @@ data_loader:
     test_path: [data/CASP12_ESM1b.npz]
     dataset_loader: ChallengeDataOnlyEmbedding
     batch_size: 15
-    nworkers: 0
+    nworkers: 0 # dont change
     shuffle: true
     validation_split: 0.05
 

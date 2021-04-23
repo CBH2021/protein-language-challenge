@@ -162,6 +162,24 @@ Usually the models are evaluated after the training finishes. If you now want to
 
   $ challenge eval -c experiments/config.yml -m saved/path/to/model_best.pth
 
+
+Prediction with model
+------------------
+
+.. code-block::
+
+  $ challenge predict -c experiments/config.yml -m saved/path/to/model_best.pth -i data/CASP12_ESM1b.npz
+
+This will generate a predictions.csv file
+
+      q8 q3
+0      C  H
+1      T  H
+2      C  H
+3      T  H
+4      T  H
+...   .. ..
+
 Resuming from checkpoints
 -------------------------
 You can resume from a previously saved checkpoint by:
@@ -206,7 +224,7 @@ This template supports `<https://pytorch.org/docs/stable/tensorboard.html>`_ vis
 
 2. Open tensorboard server
 
-    Type `tensorboard --logdir saved/runs/` at the project root, then server will open at
+    Type `tensorboard --logdir saved/` at the project root, then server will open at
     `http://localhost:6006`
 
 By default, values of loss and metrics specified in config file, input images, and histogram of
@@ -229,31 +247,23 @@ Submission
 ================
 If you have setup the benchmarking system correctly, then everytime you do a github push then a docker image will automatically be pushed to https://biolib.com/<YourTeam>/<TeamName>. There is not a limit for how many submissions you can do, but I would recommend to only submit if the newest model predicts better than the previous.
 
-Before a submission it is important that you include the following in the submission folder:
+Before a submission it is important that you edit the Dockerfile and .dockerignore:
 
-1. Trained model (NAME: model.pth)
-2. Model config (NAME: config.yml)
+Dockerfile
+.. code-block::
 
-It is important that you use the following names.
+  [line: 12] COPY saved/{INSERT_MODEL_PATH_HERE} model.pth
+
+.dockerignore
+.. code-block::
+
+  [line: 4] !saved/{INSERT_MODEL_PATH_HERE}
+
 
 These files are created after a training session. Therefore you should be able to find the files model_best.pth and config.yml in that folder.
-Which can be copied to the submission folder and renamed.
-
-In the end you should have the following folder:
-
-::
-
-  ProteinLanguageChallenge/
-  │
-  ├── submission/
-  │    │
-  │    ├── model.pth <- trained model for submission
-  │    ├── config.yml <- config matching the trained model
-  │    │
-  │    └── .biolib/ - IMPORTANT: Don't delete or change this directory
-
-
 Now you can either commit and push your latest changes or you can manually push a submission by executing the following:
+
+Inside the submission folder you can write your
 
 .. code-block::
 
@@ -263,7 +273,7 @@ Remember that for manual submission you have to export the following enviroment 
 
 .. code-block::
 
-  $ export BIOLIB_EMAIL=<username>
-  $ export BIOLIB_PASSWORD=<password>
+  $ export BIOLIB_TOKEN=<token>
 
+You can get a token by going to biolib.com → click your name in the top right corner → Settings → Sign In → Generate API Token
 Remember to keep your credentials private and don't share them with anyone.
