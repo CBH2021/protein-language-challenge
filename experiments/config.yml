@@ -12,7 +12,7 @@ data_loader:
   type: ChallengeDataLoader
   args:
     train_path: [data/Train_ESM1b.npz]
-    test_path: [data/CASP12_ESM1b.npz]
+    test_path: [data/TS115_ESM1b.npz]
     dataset_loader: ChallengeDataOnlyEmbedding
     batch_size: 15
     nworkers: 0 # dont change
