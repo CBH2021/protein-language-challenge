@@ -42,7 +42,7 @@ In this challenge you should work on the models and the data_loader folder. Ever
 
 Challenge aim
 ================
-The challenge is simply to achieve the highest Q8/Q3 accuracy of secondary structure prediction on the CASP12 test dataset.
+The challenge is simply to achieve the highest Q8/Q3 accuracy of secondary structure prediction on the secret test dataset, that your submissions will be benchmarked against.
 
 Requirements
 =====
@@ -111,7 +111,7 @@ Config files are in `.yml` format:
       type: ChallengeDataLoader
       args:
         train_path: [data/Train_ESM1b.npz]
-        test_path: [data/CASP12_ESM1b.npz]
+        test_path: [data/TS115_ESM1b.npz]
         dataset_loader: ChallengeDataOnlyEmbedding
         batch_size: 15
         nworkers: 2
@@ -168,7 +168,7 @@ Prediction with model
 
 .. code-block::
 
-  $ challenge predict -c experiments/config.yml -m saved/path/to/model_best.pth -i data/CASP12_ESM1b.npz
+  $ challenge predict -c experiments/config.yml -m saved/path/to/model_best.pth -i data/TS115_ESM1b.npz
 
 This will generate a predictions.csv file
 
@@ -247,21 +247,35 @@ Submission
 ================
 If you have setup the benchmarking system correctly, then everytime you do a github push then a docker image will automatically be pushed to https://biolib.com/<YourTeam-abcd>/<TeamName>. There is not a limit for how many submissions you can do, but I would recommend to only submit if the newest model predicts better than the previous.
 
+Please follow the steps laid out in the following notion document to setup your repo to submit automatically, when a commit is pushed to `main`: https://www.notion.so/Benchmarking-System-46bfaeea0119490cb611688b493c589a
+
 Before a submission it is important that you edit the Dockerfile and .dockerignore:
 
 Dockerfile
+
 .. code-block::
 
   [line: 12] COPY saved/{INSERT_MODEL_PATH_HERE} model.pth
 
 .dockerignore
+
 .. code-block::
 
   [line: 4] !saved/{INSERT_MODEL_PATH_HERE}
 
+as well as adding your model to git:
+
+.. code-block::
+
+  git add saved/{INSERT_MODEL_PATH_HERE}
+
 
 These files are created after a training session. Therefore you should be able to find the files model_best.pth and config.yml in that folder.
-Now you can either commit and push your latest changes or you can manually push a submission by executing the following:
+
+
+
+
+If you absolutely could not setup automatic submission then you can submit manually through:
 
 Inside the submission folder you can write your
 
