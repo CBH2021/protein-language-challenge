@@ -66,9 +66,9 @@ class NetSurfModel(ModelBase):
         x = self.bilstm(x)
 
         # Convert to 
-        ss8 = 
+        print(x)
 
-        ss8 = x
+        ss8 = self.ss8(x)
         ss3 = self.ss3(x)
 
         return [ss8, ss3]
