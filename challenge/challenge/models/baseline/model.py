@@ -42,6 +42,7 @@ class NetSurfModel(ModelBase):
         self.cnn1 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1280, out = 40
         self.cnn2 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1632, out = 51
         self.bilstm = nn.LSTM(input_size=int(in_features/16), hidden_size=hidden_size, num_layers=lstm_layers, bidirectional=True, dropout=dropout)
+        self.fc1 = nn.Linear(in_features=int(hidden_size*2), out_features=8)
         self.dropout = nn.Dropout(dropout)
 
         self.ss8 = nn.Linear(in_features=in_features, out_features=8)
@@ -68,11 +69,10 @@ class NetSurfModel(ModelBase):
         x = x.permute(0, 2, 1)
         print(f"3. x shape is: {x.shape}")
         x, (h, c) = self.bilstm(x) # Output of LSTM is output, (hidden, cells)
-        print(x)
         print(f"4. x shape is: {x.shape}")
 
         # Convert to 8 outputs for each class
-        x = nn.Linear(x, out_features=8)
+        x = self.fc1(x)
         print(f"5. x shape is: {x.shape}")
 
         ss8 = x
