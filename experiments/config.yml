@@ -7,7 +7,7 @@ arch:
   type: Baseline
   args:
     in_features: 1280
-    dropout: 0.5
+    # dropout: 0.5
 
 data_loader:
   type: ChallengeDataLoader
