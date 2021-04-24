@@ -29,3 +29,26 @@ class Baseline(ModelBase):
         ss3 = self.ss3(x)
 
         return [ss8, ss3]
+
+class TestModel(ModelBase):
+    def __init__(self, in_features: int):
+        """ Simple baseline model for prediction secondary structure
+        Args:
+            in_features: size in features
+        """
+        super(TestModel, self).__init__()
+        print("Using TestModel")
+
+        # Task block
+        self.ss8 = nn.Linear(in_features=in_features, out_features=8)
+        self.ss3 = nn.Linear(in_features=in_features, out_features=3)
+
+        log.info(f'<init>: \n{self}')
+
+    def forward(self, x: torch.tensor, mask: torch.tensor) -> torch.tensor:
+        """ Forwarding logic """
+
+        ss8 = self.ss8(x)
+        ss3 = self.ss3(x)
+
+        return [ss8, ss3]
