@@ -65,6 +65,7 @@ class NetSurfModel(ModelBase):
         print(f"2. x shape is: {x.shape}")
 
         # Pass identity layer output to two-layer biLSTM
+        x = x.permute(0, 1, 2)
         x = self.bilstm(x)
         print(f"3. x shape is: {x.shape}")
 
