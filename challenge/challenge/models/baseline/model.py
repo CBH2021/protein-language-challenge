@@ -53,7 +53,7 @@ class NetSurfModel(ModelBase):
     def forward(self, x: torch.tensor, mask: torch.tensor) -> torch.tensor:
         """ Forwarding logic """
         ss3 = self.ss3(x)
-        
+
         print(f"0. x shape is: {x.shape}")
         x = x.permute(0,2,1)
          # Pass embeddings to two parallel CNNs
@@ -72,7 +72,7 @@ class NetSurfModel(ModelBase):
         x, (h, c) = self.bilstm(x) # Output of LSTM is output, (hidden, cells)
         print(f"4. x shape is: {x.shape}")
 
-        # Convert to 8 outputs for each class
+        # Pass through fully connected layer with 8 outputs
         x = self.fc1(x)
         print(f"5. x shape is: {x.shape}")
 
