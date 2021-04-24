@@ -27,9 +27,9 @@ class Baseline(ModelBase):
 
         ss8 = self.ss8(x)
         ss3 = self.ss3(x)
-        print(ss8)
+        print(ss8.shape())
         print("========")
-        print(ss3)
+        print(ss3.shape())
         return [ss8, ss3]
 
 class NetSurfModel(ModelBase):
