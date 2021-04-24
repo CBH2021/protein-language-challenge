@@ -52,9 +52,9 @@ class NetSurfModel(ModelBase):
     def forward(self, x: torch.tensor, mask: torch.tensor) -> torch.tensor:
         """ Forwarding logic """
 
-        # Pass embeddings to two parallel CNNs
-        x1 = self.cnn1(self.in_features)
-        x2 = self.cnn2(self.in_features)
+         # Pass embeddings to two parallel CNNs
+        x1 = self.cnn1(x)
+        x2 = self.cnn2(x)
 
         # Concatenate outputs of parallel CNNs to form identity layer
         x = torch.cat(x1, x2, dim=0) 
