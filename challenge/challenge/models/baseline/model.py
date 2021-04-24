@@ -39,8 +39,8 @@ class NetSurfModel(ModelBase):
         in_features = 1632
         self.in_features = in_features
 
-        self.cnn1 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1280, out = 40
-        self.cnn2 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0)
+        self.cnn1 = nn.Conv2d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1280, out = 40
+        self.cnn2 = nn.Conv2d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1632, out = 51
         self.bilstm = nn.LSTM(input_size=int(in_features/16), hidden_size=1024, num_layers=2, bidirectional=True, dropout=dropout)
         self.dropout = nn.Dropout(dropout)
 
@@ -59,11 +59,12 @@ class NetSurfModel(ModelBase):
         print(f"x1 shape is {x1.shape} and x2 is {x2.shape}")
 
         # Concatenate outputs of parallel CNNs to form identity layer
-        x = torch.cat((x1, x2), dim=0) 
+        x = torch.cat((x1, x2), dim=1) 
         print(f"2. x shape is: {x.shape}")
 
         # Pass identity layer output to two-layer biLSTM
         x = self.bilstm(x)
+        print(f"3. x shape is: {x.shape}")
 
         # Convert to 8 outputs for each class
         x = nn.Linear(x, out_features=8)
