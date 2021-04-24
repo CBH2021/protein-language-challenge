@@ -76,6 +76,7 @@ class NetSurfModel(ModelBase):
         print(f"5. x shape is: {x.shape}")
 
         ss8 = x
+        print(ss8)
         ss3 = self.ss3(x)
 
         return [ss8, ss3]
