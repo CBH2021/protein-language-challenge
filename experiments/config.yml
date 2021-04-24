@@ -4,12 +4,12 @@ seed: 1234
 target_devices: [0]
 
 arch:
-  type: Baseline
+  type: NetSurfModel
   args:
     in_features: 1280
-    # hidden_size: 1024
-    # lstm_layers: 2
-    # dropout: 0.5
+    hidden_size: 1024
+    lstm_layers: 2
+    dropout: 0.5
 
 data_loader:
   type: ChallengeDataLoader

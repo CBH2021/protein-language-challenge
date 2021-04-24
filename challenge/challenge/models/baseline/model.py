@@ -75,7 +75,7 @@ class NetSurfModel(ModelBase):
 
         # Pass through fully connected layer with 8 outputs
         x = self.fc1(x)
-        print(f"5. x shape is: {x.shape}")
+        print(f"5. x shape is: {x.shape}") # I want this to be [15, 1632, 8]
 
         ss8 = x
         # print(ss8)
