@@ -25,11 +25,8 @@ class Baseline(ModelBase):
     def forward(self, x: torch.tensor, mask: torch.tensor) -> torch.tensor:
         """ Forwarding logic """
 
-        ss8 = self.ss8(x)
+        ss8 = self.ss8(x) # shape is [aa, feats, 8]
         ss3 = self.ss3(x)
-        print(ss8.shape)
-        print("========")
-        print(ss3.shape)
         return [ss8, ss3]
 
 class NetSurfModel(ModelBase):
@@ -47,7 +44,7 @@ class NetSurfModel(ModelBase):
         self.bilstm = nn.LSTM(input_size=in_features/16, hidden_size=1024, num_layers=2, bidirectional=True, dropout=dropout)
         self.dropout = nn.Dropout(dropout)
 
-        # self.ss8 = nn.Linear(in_features=in_features, out_features=8)
+        self.ss8 = nn.Linear(in_features=in_features, out_features=8)
         self.ss3 = nn.Linear(in_features=in_features, out_features=3)
 
         log.info(f'<init>: \n{self}')
@@ -65,10 +62,10 @@ class NetSurfModel(ModelBase):
         # Pass identity layer output to two-layer biLSTM
         x = self.bilstm(x)
 
-        # Convert to 
-        print(x)
+        # Convert to 8 outputs for each class
+        x = nn.Linear(x, out_features=8)
 
-        ss8 = self.ss8(x)
+        ss8 = x
         ss3 = self.ss3(x)
 
         return [ss8, ss3]
