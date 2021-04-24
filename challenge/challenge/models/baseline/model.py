@@ -66,8 +66,9 @@ class NetSurfModel(ModelBase):
 
         # Pass identity layer output to two-layer biLSTM
         x = x.permute(0, 1, 2)
-        x = self.bilstm(x)
         print(f"3. x shape is: {x.shape}")
+        x = self.bilstm(x)
+        print(f"4. x shape is: {x.shape}")
 
         # Convert to 8 outputs for each class
         x = nn.Linear(x, out_features=8)
