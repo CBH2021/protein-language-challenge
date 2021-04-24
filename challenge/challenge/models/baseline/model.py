@@ -57,7 +57,7 @@ class NetSurfModel(ModelBase):
         x2 = self.cnn2(x)
 
         # Concatenate outputs of parallel CNNs to form identity layer
-        x = torch.cat(x1, x2, dim=0) 
+        x = torch.cat((x1, x2), dim=0) 
 
         # Pass identity layer output to two-layer biLSTM
         x = self.bilstm(x)
