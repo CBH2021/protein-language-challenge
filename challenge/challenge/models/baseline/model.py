@@ -36,11 +36,11 @@ class NetSurfModel(ModelBase):
             in_features: size in features
         """
         super(NetSurfModel, self).__init__()
-        in_features = 1632
+        in_features = 1280
         self.in_features = in_features
 
-        self.cnn1 = nn.Conv2d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1280, out = 40
-        self.cnn2 = nn.Conv2d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1632, out = 51
+        self.cnn1 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1280, out = 40
+        self.cnn2 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1632, out = 51
         self.bilstm = nn.LSTM(input_size=int(in_features/16), hidden_size=1024, num_layers=2, bidirectional=True, dropout=dropout)
         self.dropout = nn.Dropout(dropout)
 
@@ -52,6 +52,8 @@ class NetSurfModel(ModelBase):
     def forward(self, x: torch.tensor, mask: torch.tensor) -> torch.tensor:
         """ Forwarding logic """
 
+        print(f"0. x shape is: {x.shape}")
+        x = x.permute(0,2,1)
          # Pass embeddings to two parallel CNNs
         print(f"1. x shape is: {x.shape}")
         x1 = self.cnn1(x)
