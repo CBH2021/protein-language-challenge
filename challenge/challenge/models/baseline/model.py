@@ -52,7 +52,8 @@ class NetSurfModel(ModelBase):
 
     def forward(self, x: torch.tensor, mask: torch.tensor) -> torch.tensor:
         """ Forwarding logic """
-
+        ss3 = self.ss3(x)
+        
         print(f"0. x shape is: {x.shape}")
         x = x.permute(0,2,1)
          # Pass embeddings to two parallel CNNs
@@ -77,6 +78,5 @@ class NetSurfModel(ModelBase):
 
         ss8 = x
         # print(ss8)
-        ss3 = self.ss3(x)
 
         return [ss8, ss3]
