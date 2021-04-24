@@ -68,6 +68,7 @@ class NetSurfModel(ModelBase):
         x = x.permute(0, 2, 1)
         print(f"3. x shape is: {x.shape}")
         x = self.bilstm(x)
+        print(x)
         print(f"4. x shape is: {x.shape}")
 
         # Convert to 8 outputs for each class
