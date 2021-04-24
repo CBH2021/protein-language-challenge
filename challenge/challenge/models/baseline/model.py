@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import numpy as np
 
 from challenge.base import ModelBase
 from challenge.utils import setup_logger
@@ -18,16 +19,20 @@ class Baseline(ModelBase):
 
         # Task block
         self.ss8 = nn.Linear(in_features=in_features, out_features=8)
-        self.ss3 = nn.Linear(in_features=in_features, out_features=3)
+        #self.ss3 = nn.Linear(in_features=in_features, out_features=3)
 
         log.info(f'<init>: \n{self}')
 
     def forward(self, x: torch.tensor, mask: torch.tensor) -> torch.tensor:
         """ Forwarding logic """
 
-        ss8 = self.ss8(x) # shape is [aa, feats, 8]
-        ss3 = self.ss3(x)
-        print(f"Shape is: {ss8.shape}")
+        ss8 = self.ss8(x)
+        #ss3 = self.ss3(x)
+        ss8 = nn.functional.softmax(ss8, 2)
+        ss3 = torch.stack([torch.sum(ss8[:, :, :3], 2),\
+                           torch.sum(ss8[:, :, 3:5], 2),\
+                           torch.sum(ss8[:, :, 5:], 2)], dim=2)
+
         return [ss8, ss3]
 
 # class NetSurfModel(ModelBase):
