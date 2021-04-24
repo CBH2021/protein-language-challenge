@@ -109,24 +109,24 @@ class NetSurfModel(ModelBase):
         print(f"0. x shape is: {x.shape}")
         x = x.permute(0,2,1)
          # Pass embeddings to two parallel CNNs
-        print(f"1. x shape is: {x.shape}")
+        # print(f"1. x shape is: {x.shape}")
         x1 = self.cnn1(x)
         x2 = self.cnn2(x)
-        print(f"x1 shape is {x1.shape} and x2 is {x2.shape}")
+        # print(f"x1 shape is {x1.shape} and x2 is {x2.shape}")
 
         # Concatenate outputs of parallel CNNs to form identity layer
         x = torch.cat((x1, x2), dim=1) 
-        print(f"2. x shape is: {x.shape}")
+        # print(f"2. x shape is: {x.shape}")
 
         # Pass identity layer output to two-layer biLSTM
         x = x.permute(0, 2, 1)
-        print(f"3. x shape is: {x.shape}")
+        # print(f"3. x shape is: {x.shape}")
         x, (h, c) = self.bilstm(x) # Output of LSTM is output, (hidden, cells)
-        print(f"4. x shape is: {x.shape}")
+        # print(f"4. x shape is: {x.shape}")
 
         # Pass through fully connected layer with 8 outputs
         x = self.fc1(x)
-        print(f"5. x shape is: {x.shape}") # I want this to be [15, 1632, 8]
+        # print(f"5. x shape is: {x.shape}") # I want this to be [15, 1632, 8]
 
         ss8 = x
         # print(ss8)
