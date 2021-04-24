@@ -1,10 +1,10 @@
-name: netsurf_model
+name: baseline_test
 save_dir: saved/
 seed: 1234
 target_devices: [0]
 
 arch:
-  type: NetSurfModel
+  type: Baseline
   args:
     in_features: 1280
     dropout: 0.5
