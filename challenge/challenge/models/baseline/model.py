@@ -53,13 +53,13 @@ class NetSurfModel(ModelBase):
         """ Forwarding logic """
 
          # Pass embeddings to two parallel CNNs
+        print(f"1. x shape is: {x}")
         x1 = self.cnn1(x)
         x2 = self.cnn2(x)
 
         # Concatenate outputs of parallel CNNs to form identity layer
         x = torch.cat((x1, x2), dim=1) 
-        print(x)
-        print(x.shape)
+        print(f"2. x shape is: {x}")
 
         # Pass identity layer output to two-layer biLSTM
         x = self.bilstm(x)
