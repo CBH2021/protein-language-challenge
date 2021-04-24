@@ -27,6 +27,7 @@ class Baseline(ModelBase):
 
         ss8 = self.ss8(x) # shape is [aa, feats, 8]
         ss3 = self.ss3(x)
+        print(f"Shape is: {ss8.shape}")
         return [ss8, ss3]
 
 class NetSurfModel(ModelBase):
