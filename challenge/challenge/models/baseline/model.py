@@ -36,7 +36,7 @@ class NetSurfModel(ModelBase):
             in_features: size in features
         """
         super(NetSurfModel, self).__init__()
-
+        print(in_features)
         self.in_features = in_features
 
         self.cnn1 = nn.Conv1d(in_channels=in_features, out_channels=(in_features/32), kernel_size=32, stride=1, padding=0) # 1280/32 = 40 out features
