@@ -30,7 +30,7 @@ class Baseline(ModelBase):
         return [ss8, ss3]
 
 class NetSurfModel(ModelBase):
-    def __init__(self, in_features: int, dropout):
+    def __init__(self, in_features: int, hidden_size, lstm_layers, dropout):
         """ Simple baseline model for prediction secondary structure
         Args:
             in_features: size in features
@@ -41,7 +41,7 @@ class NetSurfModel(ModelBase):
 
         self.cnn1 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1280, out = 40
         self.cnn2 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1632, out = 51
-        self.bilstm = nn.LSTM(input_size=int(in_features/16), hidden_size=1024, num_layers=2, bidirectional=True, dropout=dropout)
+        self.bilstm = nn.LSTM(input_size=int(in_features/16), hidden_size=hidden_size, num_layers=lstm_layers, bidirectional=True, dropout=dropout)
         self.dropout = nn.Dropout(dropout)
 
         self.ss8 = nn.Linear(in_features=in_features, out_features=8)
@@ -67,12 +67,13 @@ class NetSurfModel(ModelBase):
         # Pass identity layer output to two-layer biLSTM
         x = x.permute(0, 2, 1)
         print(f"3. x shape is: {x.shape}")
-        x = self.bilstm(x)
+        x, (h, c) = self.bilstm(x) # Output of LSTM is output, (hidden, cells)
         print(x)
         print(f"4. x shape is: {x.shape}")
 
         # Convert to 8 outputs for each class
         x = nn.Linear(x, out_features=8)
+        print(f"5. x shape is: {x.shape}")
 
         ss8 = x
         ss3 = self.ss3(x)
