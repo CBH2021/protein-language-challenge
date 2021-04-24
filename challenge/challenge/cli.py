@@ -34,9 +34,10 @@ def train(config_filename: str, resume: str):
 @cli.command()
 @click.option('-c', '--config-filename', default=['experiments/config.yml'], help='Path to model configuration file.')
 @click.option('-m', '--model_path', default='model.pth', type=str, help='Path to trained model')
-def eval(config_filename: str, model_path: str):
+@click.option('-i', '--test_path', default=None, type=str, help='Path to test data')
+def eval(config_filename: str, model_path: str, test_path: str):
     config = load_config(config_filename)
-    main.eval(config, model_path)
+    main.eval(config, model_path, test_path)
 
 
 @cli.command()

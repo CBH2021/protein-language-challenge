@@ -34,11 +34,11 @@ class EvaluateBase:
 
         # load the best model from the experiment
         if checkpoint_dir:
-            model_best = torch.load(self.checkpoint_dir / "model_best.pth")
+            model_best = torch.load(self.checkpoint_dir / "model_best.pth", map_location=self.device)
             self.model.load_state_dict(model_best["state_dict"])
 
         if model_path:
-            model_best = torch.load(model_path)
+            model_best = torch.load(model_path, map_location=self.device)
             self.model.load_state_dict(model_best["state_dict"])
 
         self.evaluations = {}
