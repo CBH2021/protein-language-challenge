@@ -41,7 +41,7 @@ class NetSurfModel(ModelBase):
 
         self.cnn1 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0) # in = 1280, out = 40
         self.cnn2 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=32, stride=1, padding=0)
-        self.bilstm = nn.LSTM(input_size=in_features/16, hidden_size=1024, num_layers=2, bidirectional=True, dropout=dropout)
+        self.bilstm = nn.LSTM(input_size=int(in_features/16), hidden_size=1024, num_layers=2, bidirectional=True, dropout=dropout)
         self.dropout = nn.Dropout(dropout)
 
         self.ss8 = nn.Linear(in_features=in_features, out_features=8)
