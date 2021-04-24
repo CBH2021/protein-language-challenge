@@ -89,8 +89,8 @@ class NetSurfModel(ModelBase):
             in_features: size in features
         """
         super(NetSurfModel, self).__init__()
-        self.in_features = in_features
 
+        self.in_features = in_features
         self.cnn1 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=9, stride=1, padding=4) # in = 1280, out = 40
         self.cnn2 = nn.Conv1d(in_channels=in_features, out_channels=int(in_features/32), kernel_size=9, stride=1, padding=4) # in = 1632, out = 51
         self.bilstm = nn.LSTM(input_size=int(in_features/16), hidden_size=hidden_size, num_layers=lstm_layers, bidirectional=True, dropout=dropout)
@@ -106,7 +106,7 @@ class NetSurfModel(ModelBase):
         """ Forwarding logic """
         ss3 = self.ss3(x)
 
-        print(f"0. x shape is: {x.shape}")
+        # print(f"0. x shape is: {x.shape}")
         x = x.permute(0,2,1)
          # Pass embeddings to two parallel CNNs
         # print(f"1. x shape is: {x.shape}")
@@ -126,7 +126,7 @@ class NetSurfModel(ModelBase):
 
         # Pass through fully connected layer with 8 outputs
         x = self.fc1(x)
-        # print(f"5. x shape is: {x.shape}") # I want this to be [15, 1632, 8]
+        print(f"5. x shape is: {x.shape}") # I want this to be [15, 1632, 8]
 
         ss8 = x
         # print(ss8)
